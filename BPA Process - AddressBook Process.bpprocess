@@ -1,0 +1,43 @@
+﻿<process name="AddressBook Process" version="1.0" bpversion="6.9.0.26970" narrative="Flow of address book system" byrefcollection="true" preferredid="06e4800a-9d7d-4bad-9afb-c7b5f517d847">
+  <view>
+    <camerax>0</camerax>
+    <cameray>0</cameray>
+    <zoom version="2">1.5625</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <stage stageid="9871397c-7c5c-4928-86e8-d7a1222c1778" name="Start" type="Start">
+    <display x="15" y="-105" />
+    <onsuccess>6f905a6d-4473-4acc-a21c-2d3a1147c123</onsuccess>
+  </stage>
+  <stage stageid="4cb2002a-f2b4-4c67-8ece-7fd1caa5d0a3" name="End" type="End">
+    <display x="15" y="135" />
+  </stage>
+  <stage stageid="89e709a6-94e1-4249-847e-21752cea844a" name="Stage1" type="ProcessInfo">
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="6f905a6d-4473-4acc-a21c-2d3a1147c123" name="Insert Contacts into Address Book Table" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-60" />
+    <onsuccess>1ff31a8e-edf5-45f5-b75e-32458e1c5ff0</onsuccess>
+    <resource object="AddressBookSystem" action="Insert Contacts into Address Book Table" />
+  </stage>
+  <stage stageid="1ff31a8e-edf5-45f5-b75e-32458e1c5ff0" name="Delete Contact" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="-15" />
+    <onsuccess>34a184bf-9161-42e5-a12c-0fc01e3d8ef7</onsuccess>
+    <resource object="AddressBookSystem" action="Delete Contact" />
+  </stage>
+  <stage stageid="34a184bf-9161-42e5-a12c-0fc01e3d8ef7" name="Check Duplicate" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="30" />
+    <onsuccess>d6a743b8-7f3c-4ed8-8981-929e63ca2a11</onsuccess>
+    <resource object="AddressBookSystem" action="Check Duplicate" />
+  </stage>
+  <stage stageid="d6a743b8-7f3c-4ed8-8981-929e63ca2a11" name="Get contact by name" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="75" />
+    <onsuccess>4cb2002a-f2b4-4c67-8ece-7fd1caa5d0a3</onsuccess>
+    <resource object="AddressBookSystem" action="Get contact by name" />
+  </stage>
+</process>
