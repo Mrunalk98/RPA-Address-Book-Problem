@@ -1,0 +1,164 @@
+﻿<process name="Insert Contacts into Address Book Table" version="1.0" bpversion="6.9.0.26970" narrative="Creation of AddressBook Table and performing CRUD operations on it" byrefcollection="true" type="object" runmode="Exclusive" preferredid="316e265a-29b2-43e5-be8d-b413f477c245">
+  <appdef>
+    <element name="Application Root">
+      <id>cd19c2c0-cb45-4686-b091-16f21483253c</id>
+      <type>Application</type>
+      <basetype>Application</basetype>
+      <datatype>unknown</datatype>
+      <diagnose>False</diagnose>
+    </element>
+  </appdef>
+  <view>
+    <camerax>0</camerax>
+    <cameray>0</cameray>
+    <zoom version="2">1.5625</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <stage stageid="7e2664d4-d2dd-4aa4-872d-fc7d18f781fd" name="Insert Contacts into Address Book Table" type="SubSheetInfo">
+    <display x="-330" y="-120" w="150" h="90" />
+  </stage>
+  <stage stageid="8de7c8fd-0bc9-4c4e-a043-07aef8a95560" name="Start" type="Start">
+    <loginhibit />
+    <display x="-180" y="-180" />
+    <onsuccess>f28e19f9-7088-4731-bde4-8b1bb014d9b2</onsuccess>
+  </stage>
+  <stage stageid="c8c43059-3824-42d3-b901-bad745eedbd5" name="End" type="End">
+    <loginhibit />
+    <display x="-180" y="45" />
+  </stage>
+  <stage stageid="a0358b91-4163-4917-ab68-45bf9fc9d584" name="Data - SQL Server::Set Connection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="-45" />
+    <inputs>
+      <input type="text" name="Server" friendlyname="Server" narrative="The name of the server and, if necessary, instance name of the SQL Server instance to connect to" expr="&quot;(LocalDB)\BluePrismLocalDB&quot;" />
+      <input type="text" name="Database" friendlyname="Database" narrative="The name of the database to connect to" expr="&quot;AddressBookDB&quot;" />
+      <input type="text" name="User" friendlyname="User" narrative="If appropriate, the login name to use to connect to SQL Server. If left empty, windows authentication using the current user will be used instead of SQL Server authentication" expr="" />
+      <input type="password" name="Password" friendlyname="Password" narrative="If appropriate, the password to use with the above login name to access SQL Server. Unused for windows authentication" expr="" />
+    </inputs>
+    <onsuccess>5584be16-7098-4caf-b163-cf294062e1a5</onsuccess>
+    <resource object="Data - SQL Server" action="Set Connection" />
+  </stage>
+  <stage stageid="f28e19f9-7088-4731-bde4-8b1bb014d9b2" name="MS Excel VBO::Create Instance" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="-180" />
+    <inputs>
+      <input type="flag" name="Enable Events" friendlyname="Enable Events" narrative="Flag to indicate that events should be enabled / disabled on the attached instance - defaulted to True" expr="" />
+    </inputs>
+    <outputs>
+      <output type="number" name="handle" friendlyname="handle" narrative="An integer which can be used to identify the created instance in subsequent actions" stage="handle" />
+    </outputs>
+    <onsuccess>b9394906-4e8d-4ccc-9269-8b9695d9bd80</onsuccess>
+    <resource object="MS Excel VBO" action="Create Instance" />
+  </stage>
+  <stage stageid="4e7176d2-b033-452d-a90a-f751bd5925d4" name="handle" type="Data">
+    <display x="165" y="-165" />
+    <datatype>number</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="b9394906-4e8d-4ccc-9269-8b9695d9bd80" name="MS Excel VBO::Open Workbook" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="-135" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the required workbook should be opened. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="File name" friendlyname="File name" narrative="The path and name of the file which should be opened." expr="&quot;D:\RPA_Projects\AddressBookSystemProblem\AddressBookData.xlsx&quot;" />
+    </inputs>
+    <outputs>
+      <output type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name used by Excel to identify the workbook - usually this is the file name (without the path)." stage="Workbook Name" />
+    </outputs>
+    <onsuccess>a20d197e-abf7-4a41-b704-cca7c62d637d</onsuccess>
+    <resource object="MS Excel VBO" action="Open Workbook" />
+  </stage>
+  <stage stageid="fcda341b-e61f-4110-b8d2-01a9a39d560e" name="Workbook Name" type="Data">
+    <display x="240" y="-165" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="a20d197e-abf7-4a41-b704-cca7c62d637d" name="MS Excel VBO::Get Worksheet As Collection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="-90" y="-90" />
+    <inputs>
+      <input type="number" name="handle" friendlyname="handle" narrative="The integer handle identifying the instance on which the worksheet which should be retrieved resides. The default of zero indicates the currently active instance." expr="[handle]" />
+      <input type="text" name="Workbook Name" friendlyname="Workbook Name" narrative="The name of the workbook which contains the sheet required. The default empty text indicates the currently active workbook on the specified instance." expr="[Workbook Name]" />
+      <input type="text" name="Worksheet Name" friendlyname="Worksheet Name" narrative="The name of the worksheet within the specified workbook which should be written to a collection. The default empty text indicates the currently active worksheet within the specified workbook." expr="&quot;Sheet1&quot;" />
+    </inputs>
+    <outputs>
+      <output type="collection" name="Data" friendlyname="Data" narrative="The collection containing the data from the specified worksheet - the column IDs will be gleaned from the first row on the sheet being retrieved." stage="ExcelData" />
+    </outputs>
+    <onsuccess>a0358b91-4163-4917-ab68-45bf9fc9d584</onsuccess>
+    <resource object="MS Excel VBO" action="Get Worksheet As Collection" />
+  </stage>
+  <stage stageid="0c69f3ca-f560-4ecf-a0c4-74475f1467a1" name="ExcelData" type="Collection">
+    <display x="165" y="-120" />
+    <datatype>collection</datatype>
+    <private />
+    <alwaysinit />
+    <collectioninfo>
+      <field name="FirstName" type="text" />
+      <field name="LastName" type="text" />
+      <field name="Address" type="text" />
+      <field name="City" type="text" />
+      <field name="State" type="text" />
+      <field name="Zip" type="text" />
+      <field name="PhoneNumber" type="text" />
+      <field name="Email" type="text" />
+    </collectioninfo>
+    <initialvalue>
+      <row>
+        <field name="FirstName" type="text" value="" />
+        <field name="LastName" type="text" value="" />
+        <field name="Address" type="text" value="" />
+        <field name="City" type="text" value="" />
+        <field name="State" type="text" value="" />
+        <field name="Zip" type="text" value="" />
+        <field name="PhoneNumber" type="text" value="" />
+        <field name="Email" type="text" value="" />
+      </row>
+    </initialvalue>
+  </stage>
+  <stage stageid="1a15b269-a0c3-470f-aeee-96cd32e00f90" name="Insert Data" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="15" y="0" />
+    <inputs>
+      <input type="text" name="Query" friendlyname="Query" narrative="The SQL query to use to perform this action" expr="&quot;insert into [AddressBookDB].[dbo].[AddressBookData] values (&#xA;'&quot;&amp;[ExcelData.FirstName]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.LastName]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.Address]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.City]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.State]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.Zip]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.PhoneNumber]&amp;&quot;',&#xA;'&quot;&amp;[ExcelData.Email]&amp;&quot;'&#xA;);&quot;" />
+    </inputs>
+    <outputs>
+      <output type="flag" name="Success" friendlyname="Success" narrative="Flag indicating success (True) or failure (False)" stage="Success" />
+      <output type="text" name="Message" friendlyname="Message" narrative="Error message giving detail regarding why this action failed" stage="Message" />
+    </outputs>
+    <onsuccess>81cefcf2-9cb4-4d34-9f0a-35de1d06c1ed</onsuccess>
+    <resource object="Data - SQL Server" action="Execute" />
+  </stage>
+  <stage stageid="732b916e-b156-413d-9b34-16982c4fe90f" name="Success" type="Data">
+    <display x="165" y="-75" />
+    <datatype>flag</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="2f0327bc-a820-4d5b-a5b5-b2a3748b7035" name="Message" type="Data">
+    <display x="165" y="-30" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="5584be16-7098-4caf-b163-cf294062e1a5" name="Loop Start1" type="LoopStart">
+    <loginhibit />
+    <display x="15" y="-45" />
+    <onsuccess>1a15b269-a0c3-470f-aeee-96cd32e00f90</onsuccess>
+    <groupid>1e06fbae-f478-4b4c-af6e-82fcca504c74</groupid>
+    <looptype>ForEach</looptype>
+    <loopdata>ExcelData</loopdata>
+  </stage>
+  <stage stageid="81cefcf2-9cb4-4d34-9f0a-35de1d06c1ed" name="Loop End1" type="LoopEnd">
+    <loginhibit />
+    <display x="15" y="45" />
+    <onsuccess>c8c43059-3824-42d3-b901-bad745eedbd5</onsuccess>
+    <groupid>1e06fbae-f478-4b4c-af6e-82fcca504c74</groupid>
+  </stage>
+</process>

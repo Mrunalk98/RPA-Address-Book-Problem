@@ -1,0 +1,69 @@
+﻿<process name="Delete Contact" version="1.0" bpversion="6.9.0.26970" narrative="Creation of AddressBook Table and performing CRUD operations on it" byrefcollection="true" type="object" runmode="Exclusive" preferredid="316e265a-29b2-43e5-be8d-b413f477c245">
+  <appdef>
+    <element name="Application Root">
+      <id>cd19c2c0-cb45-4686-b091-16f21483253c</id>
+      <type>Application</type>
+      <basetype>Application</basetype>
+      <datatype>unknown</datatype>
+      <diagnose>False</diagnose>
+    </element>
+  </appdef>
+  <view>
+    <camerax>0</camerax>
+    <cameray>0</cameray>
+    <zoom version="2">1.5625</zoom>
+  </view>
+  <preconditions />
+  <endpoint narrative="" />
+  <stage stageid="850a76d1-b8ef-4a68-b777-04e666b9a2bb" name="Delete Contact" type="SubSheetInfo">
+    <display x="-195" y="-105" w="150" h="90" />
+  </stage>
+  <stage stageid="075a15f1-2f19-443b-8257-cd4046613fcc" name="Start" type="Start">
+    <loginhibit />
+    <display x="0" y="-210" />
+    <onsuccess>fb00710d-6405-45fd-9e45-9d31cca5cacc</onsuccess>
+  </stage>
+  <stage stageid="92f8b5e2-bf0f-4a8d-934c-ff84aea53245" name="End" type="End">
+    <loginhibit />
+    <display x="0" y="-30" />
+  </stage>
+  <stage stageid="983497e8-02ab-4705-b489-0f62a5276106" name="Delete Data" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="0" y="-90" />
+    <inputs>
+      <input type="text" name="Query" friendlyname="Query" narrative="The SQL query to use to perform this action" expr="&quot;delete from [AddressBookDB].[dbo].[AddressBookData] &#xA;where FirstName='Joan';&quot;" />
+    </inputs>
+    <outputs>
+      <output type="flag" name="Success" friendlyname="Success" narrative="Flag indicating success (True) or failure (False)" stage="Success1" />
+      <output type="text" name="Message" friendlyname="Message" narrative="Error message giving detail regarding why this action failed" stage="Message1" />
+    </outputs>
+    <onsuccess>92f8b5e2-bf0f-4a8d-934c-ff84aea53245</onsuccess>
+    <resource object="Data - SQL Server" action="Execute" />
+  </stage>
+  <stage stageid="fb00710d-6405-45fd-9e45-9d31cca5cacc" name="Data - SQL Server::Set Connection" type="Action">
+    <loginhibit onsuccess="true" />
+    <display x="0" y="-150" />
+    <inputs>
+      <input type="text" name="Server" friendlyname="Server" narrative="The name of the server and, if necessary, instance name of the SQL Server instance to connect to" expr="&quot;(LocalDB)\BluePrismLocalDB&quot;" />
+      <input type="text" name="Database" friendlyname="Database" narrative="The name of the database to connect to" expr="&quot;AddressBookDB&quot;" />
+      <input type="text" name="User" friendlyname="User" narrative="If appropriate, the login name to use to connect to SQL Server. If left empty, windows authentication using the current user will be used instead of SQL Server authentication" expr="" />
+      <input type="password" name="Password" friendlyname="Password" narrative="If appropriate, the password to use with the above login name to access SQL Server. Unused for windows authentication" expr="" />
+    </inputs>
+    <onsuccess>983497e8-02ab-4705-b489-0f62a5276106</onsuccess>
+    <resource object="Data - SQL Server" action="Set Connection" />
+  </stage>
+  <stage stageid="900544a9-fa3d-4c91-a52c-b7ae96ff1aa4" name="Success1" type="Data">
+    <display x="150" y="-90" />
+    <datatype>flag</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+  <stage stageid="52a1d523-a6f3-482c-9777-8c559b44cba8" name="Message1" type="Data">
+    <display x="150" y="-135" />
+    <datatype>text</datatype>
+    <initialvalue />
+    <private />
+    <alwaysinit />
+  </stage>
+</process>
